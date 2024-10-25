@@ -166,18 +166,8 @@ class Collection(db.Model, Timestamp):
         return cls.query.order_by(cls.path, cls.order)
 
     def update(self, **kwargs):
-        """Update a collection.
-
-        To udpate a collection, there is a set of allowed keys that can be updated:
-            - slug
-            - title
-            - search_query
-            - order
-            - num_records
-        """
-        allowed_keys = {"slug", "title", "search_query", "order", "num_records"}
+        """Update a collection."""
         for key, value in kwargs.items():
-            if key in allowed_keys:
                 setattr(self, key, value)
 
     @classmethod
