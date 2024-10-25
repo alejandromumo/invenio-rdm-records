@@ -30,7 +30,7 @@ def test_update_collections_size(app, db, record_factory, minimal_record, commun
     update_collections_size()
 
     # Check that the collections have been updated
-    collection = Collection.resolve(id_=collection.id)
+    collection = Collection.read(id_=collection.id)
     assert collection.num_records == 0
 
     # Add a record that matches the collection
@@ -40,5 +40,5 @@ def test_update_collections_size(app, db, record_factory, minimal_record, commun
 
     update_collections_size()
 
-    collection = Collection.resolve(id_=collection.id)
+    collection = Collection.read(id_=collection.id)
     assert collection.num_records == 1

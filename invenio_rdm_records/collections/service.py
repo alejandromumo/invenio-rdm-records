@@ -80,10 +80,10 @@ class CollectionsService(Service):
         To resolve by slug, the collection tree ID and community ID must be provided.
         """
         if id_:
-            collection = self.collection_cls.resolve(id_=id_, depth=depth)
+            collection = self.collection_cls.read(id_=id_, depth=depth)
         elif slug and tree_slug and community_id:
             ctree = CollectionTree.resolve(slug=tree_slug, community_id=community_id)
-            collection = self.collection_cls.resolve(
+            collection = self.collection_cls.read(
                 slug=slug, ctree_id=ctree.id, depth=depth
             )
         else:
@@ -131,7 +131,7 @@ class CollectionsService(Service):
     def update(self, identity, collection_or_id, data=None, uow=None):
         """Update a collection."""
         if isinstance(collection_or_id, int):
-            collection = self.collection_cls.resolve(id_=collection_or_id)
+            collection = self.collection_cls.read(id_=collection_or_id)
         else:
             collection = collection_or_id
         self.require_permission(
@@ -167,8 +167,10 @@ class CollectionsService(Service):
         """Get many collections."""
         self.require_permission(identity, "read")
 
-        ids_ = ids_ or []
-        res = self.collection_cls.resolve_many(ids_, depth=depth)
+        if not ids_:
+            res = []
+        else:
+            res = self.collection_cls.read_many(ids_, depth=depth)
         return CollectionList(
             identity, res, self.collection_schema, None, self.links_item_tpl
         )
@@ -176,7 +178,7 @@ class CollectionsService(Service):
     def read_all(self, identity, depth=2):
         """Get all collections."""
         self.require_permission(identity, "read")
-        res = self.collection_cls.resolve_all(depth=depth)
+        res = self.collection_cls.read_all(depth=depth)
         return CollectionList(
             identity, res, self.collection_schema, None, self.links_item_tpl
         )
@@ -186,7 +188,7 @@ class CollectionsService(Service):
         params = params or {}
 
         if isinstance(collection_or_id, int):
-            collection = self.collection_cls.resolve(id_=collection_or_id)
+            collection = self.collection_cls.read(id_=collection_or_id)
         else:
             collection = collection_or_id
 
