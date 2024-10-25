@@ -52,7 +52,11 @@ class CollectionsService(Service):
     def create(
         self, identity, community_id, tree_slug, slug, title, query, uow=None, **kwargs
     ):
-        """Create a new collection."""
+        """Create a new collection.
+
+        The created collection will be added to the collection tree as a root collection (no parent).
+        If a parent is needed, use the ``add`` method.
+        """
         self.require_permission(identity, "update", community_id=community_id)
         ctree = CollectionTree.resolve(slug=tree_slug, community_id=community_id)
         collection = self.collection_cls.create(
