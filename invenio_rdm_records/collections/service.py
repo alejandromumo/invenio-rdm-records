@@ -190,7 +190,7 @@ class CollectionsService(Service):
             identity, res, self.collection_schema, None, self.links_item_tpl
         )
 
-    def search_records(self, identity, collection_or_id, params=None):
+    def search_collection_records(self, identity, collection_or_id, params=None):
         """Search records in a collection."""
         params = params or {}
 
