@@ -163,14 +163,17 @@ class CollectionsService(Service):
             return url_for("static", filename=logo_path)
         raise LogoNotFoundError()
 
-    def read_many(self, identity, ids_=None, depth=2):
+    def read_many(self, identity, ids_, depth=2):
         """Get many collections."""
         self.require_permission(identity, "read")
 
-        if not ids_:
-            res = []
-        else:
-            res = self.collection_cls.read_many(ids_, depth=depth)
+        if ids_ is None:
+            raise ValueError("IDs must be provided.")
+
+        if ids_ == []:
+            raise ValueError("Use read_all to get all collections.")
+
+        res = self.collection_cls.read_many(ids_, depth=depth)
         return CollectionList(
             identity, res, self.collection_schema, None, self.links_item_tpl
         )

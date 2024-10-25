@@ -89,7 +89,7 @@ class Collection:
         return res
 
     @classmethod
-    def read_many(cls, ids_=None, depth=2):
+    def read_many(cls, ids_, depth=2):
         """Read many collections by ID."""
         return [cls(c, depth) for c in cls.model_cls.read_many(ids_)]
 
