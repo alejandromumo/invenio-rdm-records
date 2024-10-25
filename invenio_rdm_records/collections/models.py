@@ -165,21 +165,20 @@ class Collection(db.Model, Timestamp):
         """Get all collections."""
         return cls.query.order_by(cls.path, cls.order)
 
-    def update(
-        self, /, slug=None, title=None, search_query=None, order=None, num_records=None
-    ):
-        """Update a collection."""
-        if slug is not None:
-            self.slug = slug
-        if title is not None:
-            self.title = title
-        if search_query is not None:
-            self.search_query = search_query
-        if order is not None:
-            self.order = order
-        if num_records is not None:
-            self.num_records = num_records
-        return self
+    def update(self, **kwargs):
+        """Update a collection.
+
+        To udpate a collection, there is a set of allowed keys that can be updated:
+            - slug
+            - title
+            - search_query
+            - order
+            - num_records
+        """
+        allowed_keys = {"slug", "title", "search_query", "order", "num_records"}
+        for key, value in kwargs.items():
+            if key in allowed_keys:
+                setattr(self, key, value)
 
     @classmethod
     def get_children(cls, model):
