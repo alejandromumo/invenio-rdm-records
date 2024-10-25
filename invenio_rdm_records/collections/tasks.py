@@ -21,7 +21,9 @@ def update_collections_size():
     for citem in res:
         try:
             collection = citem._collection
-            res = collections_service.search_collection_records(system_identity, collection)
+            res = collections_service.search_collection_records(
+                system_identity, collection
+            )
             collections_service.update(
                 system_identity, collection, data={"num_records": res.total}
             )
