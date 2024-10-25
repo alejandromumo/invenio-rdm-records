@@ -69,9 +69,8 @@ class CollectionsService(Service):
 
     def read(
         self,
-        /,
-        *,
         identity=None,
+        *,
         id_=None,
         slug=None,
         community_id=None,
