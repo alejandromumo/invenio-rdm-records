@@ -162,13 +162,19 @@ class Collection(db.Model, Timestamp):
 
     @classmethod
     def read_all(cls):
-        """Get all collections."""
+        """Get all collections.
+
+        The collections are ordered by ``path`` and ``order``, which means:
+
+        - By path: the collections are ordered in a breadth-first manner (first come the root collection, then the next level, and so on)
+        - By order: between the same level collections, they are ordered by the specified order field.
+        """
         return cls.query.order_by(cls.path, cls.order)
 
     def update(self, **kwargs):
         """Update a collection."""
         for key, value in kwargs.items():
-                setattr(self, key, value)
+            setattr(self, key, value)
 
     @classmethod
     def get_children(cls, model):
